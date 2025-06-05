@@ -17,7 +17,11 @@ const SideBar = () => {
   /**
    * Toggles the dark mode.
    */
-  const clearChat = () => clearMessages()
+  const clearChat = () => {
+    if (window.confirm("Are you sure you want to clear the chat history? This action cannot be undone.")) {
+      clearMessages();
+    }
+  }
   const SignOut = () => {
     if (auth.currentUser) {
       auth.signOut()
@@ -28,7 +32,7 @@ const SideBar = () => {
   }
 
   return (
-    <section className={` ${open ? "w-72" : "w-20 "} sidebar`}>
+    <section className={` ${open ? "w-72" : "w-20 "} sidebar ${!open ? "collapsed" : ""}`}> {/* Added "collapsed" class */}
       <div className="sidebar__app-bar">
         <div className={`sidebar__app-logo ${!open && "scale-0 hidden"}`}>
           <span className='w-8 h-8'><img src={bot} alt="" /></span>
@@ -42,7 +46,7 @@ const SideBar = () => {
         </div>
       </div>
       <div className="nav">
-        <span className='nav__item  bg-light-white' onClick={clearChat}>
+        <span className='nav__item nav__item--new-chat' onClick={clearChat}> {/* Replaced bg-light-white with nav__item--new-chat */}
           <div className='nav__icons'>
             <MdAdd />
           </div>

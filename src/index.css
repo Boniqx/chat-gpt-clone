@@ -3,6 +3,17 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --primary-color: #2563EB;
+  --secondary-color: #4F46E5;
+  --text-color-dark: #1F2937;
+  --text-color-light: #F3F4F6;
+  --background-color-light: #FFFFFF;
+  --background-color-dark: #111827;
+  --accent-color-light: #E0E7FF;
+  --accent-color-dark: #374151;
+}
+
 *,
 *::before,
 *::after {
@@ -11,11 +22,16 @@
   padding: 0;
 }
 
+body {
+  font-family: 'Inter', sans-serif; /* Apply Inter font */
+}
+
 @layer components {
 
   /* SideBar */
   .sidebar{
-    @apply flex flex-col gap-y-4 h-screen bg-blue-500 p-5 pt-8 relative duration-500;
+    @apply flex flex-col gap-y-4 h-screen bg-primary p-5 pt-8 relative duration-500;
+    background-color: var(--primary-color); /* New primary color */
   }
 
   .sidebar__app-bar{
@@ -23,11 +39,13 @@
   }
   
   .sidebar__app-title{
-    @apply text-white font-medium text-xl duration-500;
+    @apply text-text-light font-medium text-xl duration-500; /* Updated text color */
+    color: var(--text-color-light);
   }
   
   .sidebar__btn-close {
-    @apply cursor-pointer duration-500 text-white justify-end;
+    @apply cursor-pointer duration-500 text-text-light justify-end; /* Updated text color */
+    color: var(--text-color-light);
   }
 
   .sidebar__btn-icon{
@@ -35,7 +53,8 @@
   }
 
   .sidebar__app-logo{
-    @apply cursor-pointer duration-500 text-white;
+    @apply cursor-pointer duration-500 text-text-light; /* Updated text color */
+    color: var(--text-color-light);
   }
 
 /* SideBar Nav */
@@ -44,114 +63,276 @@
   }
 
   .nav__item {
-    @apply p-4 flex h-12 items-center gap-x-4 w-screen 
+    @apply p-4 flex h-12 items-center gap-x-4 w-full /* Changed w-screen to w-full */
     rounded-md cursor-pointer 
-    hover:bg-light-white
-    text-white text-base;
+    hover:bg-accent-color-light
+    text-text-light text-base; /* Updated text and hover background color */
+    color: var(--text-color-light);
+  }
+  .nav__item:hover {
+    background-color: var(--accent-color-light);
+    color: var(--text-color-dark); /* Text color on hover */
+  }
+  /* Ensure icons in nav__item also change color on hover */
+  .nav__item:hover .nav__icons {
+    color: var(--text-color-dark);
   }
 
+
   .nav__icons{
-    @apply cursor-pointer duration-500 text-white
+    @apply cursor-pointer duration-500 text-text-light /* Updated text color */
     text-xl;
+    color: var(--text-color-light);
   }
+
+  /* Centering icons when sidebar is collapsed */
+  .sidebar.collapsed .nav__item {
+    @apply p-3 justify-center; /* Reduced padding and center content */
+  }
+
+  .sidebar.collapsed .nav__icons {
+    @apply m-0; /* Remove any margin if present to help centering */
+  }
+
+  /* Specific style for the "New Chat" button if needed, or remove if it should be standard */
+  .nav__item--new-chat {
+    /* Example: A slightly different background or border if it needs to stand out */
+    /* For now, let's make its hover state slightly different or ensure it matches */
+    /* This will be used in SideBar.js to replace bg-light-white */
+    @apply bg-opacity-20 bg-black; /* A subtle dark tint on primary background */
+  }
+  .nav__item--new-chat:hover {
+    @apply bg-opacity-30 bg-black text-text-light; /* Darken tint on hover, keep text light */
+    /* Overriding the general nav__item hover if needed */
+    background-color: rgba(0,0,0,0.3);
+    color: var(--text-color-light);
+  }
+   /* Ensure icon color for new chat hover is also light */
+  .nav__item--new-chat:hover .nav__icons {
+    color: var(--text-color-light);
+  }
+
 
   .nav__bottom{
     @apply flex flex-col justify-end h-screen;
   }
 
   .nav__msg{
-    @apply flex bg-yellow-900 rounded-xl p-4 text-white;
+    @apply flex bg-secondary rounded-xl p-4 text-text-light; /* Updated background and text color */
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
   }
 
   .nav__p{
-    @apply font-mono;
+    @apply font-mono; /* Keeping font-mono as specified */
   }
 
 
   /* CHATVIEW */
   .chatview{
-    @apply h-screen flex-1 p-7 duration-500 overflow-hidden relative bg-slate-200
-  dark:bg-light-grey;
+    @apply h-screen flex-1 p-7 duration-500 overflow-hidden relative bg-background-light
+  dark:bg-background-dark; /* Updated background colors */
+  background-color: var(--background-color-light);
   }
+  .dark .chatview {
+    background-color: var(--background-color-dark);
+  }
+
 
   .chatview__chatarea {
     @apply h-[80vh] w-full overflow-y-scroll flex flex-col m-2 shadow-md;
   }
   
   .form{
-    @apply flex justify-between flex-col items-stretch sm:flex-row m-2 absolute bottom-0 left-0 right-0
-    text-black dark:text-white duration-500;
+    @apply flex flex-col sm:flex-row gap-2 m-2 absolute bottom-0 left-0 right-0 sm:items-end
+    text-text-dark dark:text-text-light duration-500; /* Adjusted: items-stretch (default for col) -> sm:items-end, added gap-2, removed justify-between for sm to allow textarea to grow */
+    color: var(--text-color-dark);
+  }
+  .dark .form {
+    color: var(--text-color-light);
   }
 
-  .dropdown {
-    @apply h-16 px-4 rounded-xl bg-transparent hover:bg-slate-200 hover:dark:bg-dark-grey border border-light-grey
-    dark:border-dark-grey focus:ring-offset-indigo-200 text-black dark:text-white transition 
-    ease-in-out duration-500 text-center text-base font-semibold shadow-md 
-    focus:outline-none focus:ring-2 focus:ring-offset-2;
-  }
+  /* .dropdown styles were here, removed as unused */
 
   .message__img {
-    @apply rounded-lg shadow-lg bg-cover bg-gray-400 h-[512px] w-[512px] duration-500 ease-out;
+    @apply rounded-lg shadow-lg bg-cover bg-gray-400 h-[512px] w-[512px] duration-500 ease-out; /* Kept as is, assuming specific need for gray-400 */
   }
 
   .chatview__textarea-message{
-    @apply text-xl bg-transparent h-16 sm:w-screen max-h-[20rem] min-h-[4rem] p-2 dark:bg-light-grey
-    border border-light-grey dark:border-dark-grey overflow-y-hidden mx-2
-    resize-y rounded-xl;
+    @apply text-xl bg-transparent h-16 flex-grow max-h-[20rem] min-h-[4rem] p-2 dark:bg-background-dark /* Adjusted: sm:w-screen to flex-grow, removed mx-2 */
+    border border-accent-color-light dark:border-accent-color-dark overflow-y-hidden
+    resize-y rounded-xl text-text-dark dark:text-text-light; /* Updated text colors */
+    border-color: var(--accent-color-light);
+    color: var(--text-color-dark);
   }
+  .dark .chatview__textarea-message {
+    background-color: var(--background-color-dark);
+    border-color: var(--accent-color-dark);
+    color: var(--text-color-light);
+  }
+
 
   .chatview__btn-send{
-    @apply h-16 px-4 rounded-xl bg-transparent hover:bg-slate-200 hover:dark:bg-dark-grey border border-light-grey
-    dark:border-dark-grey focus:ring-offset-indigo-200 text-black dark:text-white transition 
-    ease-in-out duration-500 text-center text-base font-semibold shadow-md 
-    focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply h-16 w-16 rounded-xl bg-transparent hover:bg-accent-color-light dark:hover:bg-accent-color-dark border border-accent-color-light
+    dark:border-accent-color-dark focus:ring-offset-secondary text-text-dark dark:text-text-light transition
+    ease-in-out duration-500 shadow-md
+    focus:outline-none focus:ring-2 focus:ring-offset-2 flex items-center justify-center; /* Adjusted for icon: w-16, flex centering, removed text-center, text-base, font-semibold */
+    border-color: var(--accent-color-light);
+    color: var(--text-color-dark);
+  }
+  .dark .chatview__btn-send {
+    border-color: var(--accent-color-dark);
+    color: var(--text-color-light);
+  }
+   .chatview__btn-send:hover {
+    background-color: var(--accent-color-light);
+  }
+  .dark .chatview__btn-send:hover {
+    background-color: var(--accent-color-dark);
+  }
+  /* Icon color within the button should also react to hover, if not already handled by text-text-dark/light */
+  .chatview__btn-send:hover > svg {
+     /* Retain original text color on hover as per previous setup or adjust if needed */
   }
 
+
   .chatview__btn-send:disabled{
-    @apply hover:bg-light-grey transition ease-in duration-500 text-center text-base font-semibold shadow-md
+    @apply hover:bg-gray-200 dark:hover:bg-gray-700 transition ease-in duration-500 shadow-md flex items-center justify-center; /* Adjusted disabled state slightly, added flex centering */
+    /* Ensure disabled icon has a muted color */
+    color: var(--accent-color-dark); /* Example: Muted color for disabled icon */
+  }
+  .dark .chatview__btn-send:disabled {
+    color: var(--accent-color-light); /* Example: Muted color for disabled icon in dark mode */
   }
 
 
   /* ChatMessage */
-  .message{
-    @apply  gap-2 p-5 m-2 flex items-start justify-between;
+  .message {
+    @apply gap-3 p-4 m-2 flex items-end justify-between; /* Adjusted padding and gap, items-end for timestamp */
   }
 
-  .message__wrapper{
-    @apply flex-1 w-screen flex-wrap overflow-hidden;
+  .message__wrapper {
+    @apply flex-1 flex flex-col max-w-[85%] rounded-xl p-3 shadow; /* Added rounded-xl, padding, shadow, max-width */
+    /* Specific styling for user (default) and AI messages below */
   }
 
-  .message__markdown{
-    @apply text-xl text-slate-700 dark:text-slate-200;
+  /* User Message Bubble */
+  .message:not(.flex-row-reverse) .message__wrapper {
+    @apply bg-primary text-text-light;
+    background-color: var(--primary-color);
+    color: var(--text-color-light);
+  }
+  /* AI Message Bubble */
+  .message.flex-row-reverse .message__wrapper {
+    @apply bg-accent-color-light dark:bg-accent-color-dark text-text-dark dark:text-text-light;
+    background-color: var(--accent-color-light);
+    color: var(--text-color-dark);
+  }
+  .dark .message.flex-row-reverse .message__wrapper {
+    background-color: var(--accent-color-dark);
+    color: var(--text-color-light);
   }
 
-  .message__createdAt{
-    @apply text-sm font-thin italic text-slate-600 dark:text-slate-300;
+
+  .message__markdown {
+    @apply text-base; /* Adjusted base text size, specific colors handled by wrapper */
+    /* Text alignment is handled by text-left/text-right in JS component */
   }
 
-  .message__pic{
-    @apply h-10 w-10 bg-slate-200 mr-4 rounded-full flex items-center justify-center text-xl;
+  /* Ensure markdown text color contrasts with its bubble */
+  .message:not(.flex-row-reverse) .message__markdown {
+    color: var(--text-color-light); /* User messages text */
+  }
+   .message.flex-row-reverse .message__markdown {
+    color: var(--text-color-dark); /* AI messages text on light bg */
+  }
+  .dark .message.flex-row-reverse .message__markdown {
+    color: var(--text-color-light); /* AI messages text on dark bg */
   }
 
-  .message__thinking{
-    @apply animate-pulse duration-1000 h-12 w-12 dark:text-white text-black text-xl
+  /* Styling for inline code in markdown */
+  .message__markdown code:not(pre > code) {
+    @apply bg-black bg-opacity-10 dark:bg-white dark:bg-opacity-10 rounded px-1.5 py-1 text-sm;
+  }
+   /* User message inline code text color */
+  .message:not(.flex-row-reverse) .message__markdown code:not(pre > code) {
+    @apply text-text-light opacity-90;
+     color: var(--text-color-light);
+  }
+  /* AI message inline code text color */
+  .message.flex-row-reverse .message__markdown code:not(pre > code) {
+    @apply text-text-dark opacity-90;
+    color: var(--text-color-dark);
+  }
+  .dark .message.flex-row-reverse .message__markdown code:not(pre > code) {
+    @apply text-text-light opacity-90;
+    color: var(--text-color-light);
+  }
+
+
+  .message__createdAt {
+    @apply text-xs font-thin italic mt-1; /* Adjusted size and margin */
+    /* Text color will be inherited or overridden by wrapper styles */
+  }
+  /* Timestamp color for user messages */
+  .message:not(.flex-row-reverse) .message__createdAt {
+    @apply text-blue-200; /* Lighter than bubble text */
+  }
+  /* Timestamp color for AI messages */
+  .message.flex-row-reverse .message__createdAt {
+    @apply text-gray-500 dark:text-gray-400;
+  }
+
+
+  .message__pic {
+    @apply h-10 w-10 rounded-full flex items-center justify-center text-xl shadow;
+    /* bg-accent-color-light text-text-dark dark:bg-accent-color-dark dark:text-text-light are now default for AI */
+    /* User pic is an img tag, AI pic is MdComputer icon */
+    /* AI pic icon color and bg */
+    background-color: var(--accent-color-light);
+    color: var(--text-color-dark);
+  }
+  .dark .message__pic { /* This will primarily style the AI pic container in dark mode */
+    background-color: var(--accent-color-dark);
+    color: var(--text-color-light);
+  }
+  /* Ensure user's image tag doesn't get a background color from this class */
+  .message:not(.flex-row-reverse) .message__pic {
+    @apply bg-transparent;
+  }
+
+
+  .message__thinking {
+    @apply animate-pulse duration-1000 h-12 w-12 dark:text-text-light text-text-dark text-xl; /* Updated text colors */
+    color: var(--text-color-dark);
+  }
+  .dark .message__thinking {
+    color: var(--text-color-light);
   }
 
   /* Signin Page */
 
   .signin{
-    @apply flex flex-col justify-center items-center h-screen w-screen overflow-hidden bg-slate-600;
+    @apply flex flex-col justify-center items-center h-screen w-screen overflow-hidden bg-background-dark; /* Updated background */
+    background-color: var(--background-color-dark);
   }
 
   .signin__btn{
-    @apply h-16 px-4 rounded-xl bg-slate-100 hover:bg-slate-300 border
-     border-light-grey focus:ring-offset-indigo-200 text-black transition 
+    @apply h-16 px-4 rounded-xl bg-background-light hover:bg-accent-color-light border
+     border-accent-color-light focus:ring-offset-secondary text-text-dark transition
     ease-in-out duration-500 text-center text-base font-semibold shadow-md 
-    focus:outline-none focus:ring-2 focus:ring-offset-2;
+    focus:outline-none focus:ring-2 focus:ring-offset-2; /* Updated colors */
+    background-color: var(--background-color-light);
+    border-color: var(--accent-color-light);
+    color: var(--text-color-dark);
+  }
+   .signin__btn:hover {
+    background-color: var(--accent-color-light);
   }
   
   .signin__tos{
-    @apply text-white text-center font-bold p-2;
+    @apply text-text-light text-center font-bold p-2; /* Updated text color */
+    color: var(--text-color-light);
   }
 
 }
@@ -161,5 +342,5 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-light-grey dark:bg-dark-grey rounded-xl;
+  @apply bg-accent-color-dark dark:bg-accent-color-light rounded-xl; /* Updated scrollbar colors */
 }

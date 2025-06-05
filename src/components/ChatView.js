@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from 'react'
+import { MdSend } from 'react-icons/md'; // Import MdSend
 import ChatMessage from './ChatMessage';
 import { ChatContext } from '../context/chatContext';
 import { auth } from '../firebase'
@@ -123,7 +124,9 @@ const ChatView = () => {
       <form className='form' onSubmit={sendMessage}>
 
         <textarea ref={inputRef} className='chatview__textarea-message' value={formValue} onChange={(e) => setFormValue(e.target.value)} />
-        <button type="submit" className='chatview__btn-send' disabled={!formValue}>Send</button>
+        <button type="submit" className='chatview__btn-send' disabled={!formValue} aria-label="Send message">
+          <MdSend className="text-2xl" /> {/* Use MdSend icon, add size class */}
+        </button>
       </form>
     </div>
   )
